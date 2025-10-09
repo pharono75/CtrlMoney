@@ -49,11 +49,18 @@ const incomeBtn = document.getElementById("incomeBtn"),
       closeExpensesModal = document.getElementById("closeExpensesModal"),
       incomeText = document.getElementById("incomeText"),
       expensesText = document.getElementById("expensesText"),
-      balanceText = document.getElementById("balanceText")
+      balanceText = document.getElementById("balanceText"),
+      transactionsList = document.getElementById("transactionsList"),
+      expensesCategory = document.getElementById("expensesCategory"),
+      expensesDate = document.getElementById("expensesDate"),
+      expensesTime = document.getElementById("expensesTime"),
+      expensesName = document.getElementById("expensesName")
 
 // Загружаем данные
 let income = parseFloat(localStorage.getItem("income")) || 0,
-    expenses = parseFloat(localStorage.getItem("expenses")) || 0
+    expenses = parseFloat(localStorage.getItem("expenses")) || 0,
+    incomeTransactions = JSON.parse(localStorage.getItem("incomeTransactions")) || [],
+    expensesTransactions = JSON.parse(localStorage.getItem("expensesTransactions")) || []
 
 // Проверяем элементы перед использованием
 if (incomeText && expensesText && balanceText) {
@@ -71,6 +78,14 @@ if (incomeText && expensesText && balanceText) {
     adjustFontSize(balanceText, balanceValue, "large")
 } else {
     console.error("Один или несколько элементов (incomeText, expensesText, balanceText) не найдены")
+}
+
+if (expensesDate) {
+    expensesDate.valueAsDate = new Date()
+}
+if (expensesTime) {
+    const now = new Date()
+    expensesTime.value = now.toTimeString().slice(0, 5)
 }
 
 // --- Форматирование чисел с разделителями тысяч ---
@@ -193,11 +208,153 @@ if (incomeModal && expensesModal) {
     })
 }
 
+
+// --- Добавление категорий---
+function getAllTransactions() {
+    const allTransactions = [
+        ...incomeTransactions.map(t => ({ ...t, type: 'income' })),
+        ...expensesTransactions.map(t => ({ ...t, type: 'expense' }))
+    ]
+    
+    // Сортируем по дате (новые сначала)
+    return allTransactions.sort((a, b) => new Date(b.date) - new Date(a.date))
+}
+
+function renderTransactionsList() {
+    if (!transactionsList) return
+    transactionsList.innerHTML = ''
+
+    const allTransactions = getAllTransactions()
+    if (allTransactions.length === 0) {
+        transactionsList.innerHTML = '<div class="transaction-item"><p>Нет транзакций</p></div>'
+        return
+    }
+
+    // --- Обновление надписи "Вчера / Сегодня / дата" ---
+    const transactionsDateBlock = document.querySelector(".transactions-date")
+    if (transactionsDateBlock) {
+        const label = transactionsDateBlock.querySelector("p")
+        const lastTransaction = allTransactions.length > 0 ? new Date(allTransactions[0].date) : new Date()
+
+        const today = new Date()
+        const yesterday = new Date()
+        yesterday.setDate(today.getDate() - 1)
+
+        let labelText = ""
+        if (lastTransaction.toDateString() === today.toDateString()) labelText = "Сегодня"
+        else if (lastTransaction.toDateString() === yesterday.toDateString()) labelText = "Вчера"
+        else labelText = lastTransaction.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })
+
+        label.textContent = labelText
+    }
+
+    // --- Группировка по датам ---
+    const groups = {}
+    allTransactions.forEach(t => {
+        const d = new Date(t.date)
+        const key = d.toDateString()
+        if (!groups[key]) groups[key] = []
+        groups[key].push(t)
+    })
+
+    const today = new Date()
+    const yesterday = new Date()
+    yesterday.setDate(today.getDate() - 1)
+
+    // --- Сокращение больших чисел ---
+    function formatCompactNumber(num) {
+        if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + ' млрд₽'
+        if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + ' млн₽'
+        if (num >= 1_000) return formatNumber(num)
+        return num + '₽'
+    }
+
+    // --- Эмодзи по категориям ---
+    function getEmoji(category) {
+        const map = {
+            'еда': '🍔',
+            'транспорт': '🚌',
+            'развлечения': '🎮',
+            'жилье': '🏠',
+            'здоровье': '💊',
+            'одежда': '👕',
+            'другое': '💡',
+            'доход': '💰'
+        }
+        return map[category] || '💸'
+    }
+
+    // --- Рендер групп ---
+    Object.keys(groups)
+        .sort((a, b) => new Date(b) - new Date(a)) // новые сверху
+        .forEach(dateKey => {
+            const date = new Date(dateKey)
+            const dateLabel =
+                date.toDateString() === today.toDateString()
+                    ? 'Сегодня'
+                    : date.toDateString() === yesterday.toDateString()
+                    ? 'Вчера'
+                    : date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })
+
+            // Заголовок даты
+            const dateHeader = document.createElement('div')
+            dateHeader.className = 'transaction-date-header'
+            dateHeader.textContent = dateLabel
+            transactionsList.appendChild(dateHeader)
+
+            // Список транзакций за эту дату
+            groups[dateKey].forEach(transaction => {
+                const transactionItem = document.createElement('div')
+                transactionItem.className = 'transaction-item'
+
+                const emoji = getEmoji(transaction.category)
+                const transactionName =
+                    transaction.type === 'income'
+                        ? 'Доход'
+                        : (transaction.name || transaction.category || 'Трата')
+
+                const amountClass = transaction.type === 'income' ? 'positive' : 'negative'
+                const amountSign = transaction.type === 'income' ? '+' : '-'
+
+                const shortAmount = formatCompactNumber(transaction.amount)
+
+                transactionItem.innerHTML = `
+                    <div class="transaction-icon emoji-bg">
+                        <span class="emoji">${emoji}</span>
+                    </div>
+                    <div class="transaction-info">
+                        <p class="transaction-name">${transactionName}</p>
+                    </div>
+                    <div class="transaction-amount ${amountClass}">
+                        <p>${amountSign}${shortAmount}</p>
+                    </div>
+                `
+                transactionsList.appendChild(transactionItem)
+            })
+        })
+}
+
+
+function formatDate(dateString) {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })
+}
+
 // --- Добавление дохода ---
 function addIncome() {
     const amount = parseFloat(incomeInput.value)
     if (!isNaN(amount) && amount > 0) {
+        // Добавляем в список доходов
+        const transaction = {
+            amount: amount,
+            date: new Date().toISOString()
+        }
+        
+        incomeTransactions.push(transaction)
+        localStorage.setItem("incomeTransactions", JSON.stringify(incomeTransactions))
+        
         updateIncome(amount)
+        renderTransactionsList()  // Обновляем список транзакций
         incomeInput.value = ""
         incomeModal.style.display = "none"
     } else {
@@ -208,41 +365,56 @@ function addIncome() {
 if (addIncomeBtn) addIncomeBtn.addEventListener("click", addIncome)
 if (incomeInput) incomeInput.addEventListener("keydown", (e) => { if (e.key === "Enter") addIncome() })
 
-
-const expensesDate = document.getElementById("expensesDate")
-const expensesTime = document.getElementById("expensesTime")
-
 // --- Добавление расхода ---
 function addExpense() {
     let inputValue = expensesInput.value.trim()
     
-    inputValue = inputValue.value.match(/[\d\s,]+/g).join('').replace(',', '.')
+    inputValue = inputValue.replace(',', '.')
     let amount = parseFloat(inputValue)
-    const selectedTime = expensesTime.value
-    const selectedDate = expensesDate.value
+    const category = expensesCategory.value,
+        selectedTime = expensesTime.value,
+        selectedDate = expensesDate.value,
+        name = expensesName.value.trim()
 
     
-    if (!isNaN(amount) && amount !== 0) {
+    if (!isNaN(amount) && amount !== 0 && category.trim() !== '' && name !== '') {
         amount = Math.abs(amount)
 
+        let dateTime  
         if (selectedTime && selectedDate) {
-            const dateObj = new Date(selectedDate)
-            const [hours, minutes] = selectedTime.split(":").map(Number)
-            dateObj.setHours(hours, minutes, 0, 0)
+            dateTime = new Date(selectedDate + 'T' + selectedTime)
+        } else {
+            dateTime = new Date()
         }
+
+        const transaction = {
+            amount: amount,
+            name: name,
+            category: category,
+            date: dateTime.toISOString(),
+        }
+
+        expensesTransactions.push(transaction)
+        localStorage.setItem("expensesTransactions", JSON.stringify(expensesTransactions))
+        
         updateExpenses(amount)
+        renderTransactionsList()
+        
+        expensesDate.value = ""
         expensesInput.value = ""
+        expensesCategory.value = ""
         expensesModal.style.display = "none"
     } else {
-        alert("Введите корректную сумму")
+        alert("Заполните все поля корректно")
     }
 }
+
 
 if (addExpensesBtn) addExpensesBtn.addEventListener("click", addExpense)
 if (expensesInput) expensesInput.addEventListener("keydown", (e) => { if (e.key === "Enter") addExpense() })
 
 // --- Инициализация экономики при загрузке ---
 updateEconomy()
-
+renderTransactionsList()  // Добавьте эту строку
 
 

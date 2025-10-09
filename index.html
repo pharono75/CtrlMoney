@@ -121,9 +121,20 @@
                     <div class="modal-content">
                         <span class="close" id="closeExpensesModal">&times;</span>
                         <h2>Добавить трату</h2>
+                        <input type="text" id="expensesName" placeholder="Введите название">
                         <input type="number" id="expensesAmount" placeholder="Введите сумму">
                         <input type="date" id="expensesDate">
                         <input type="time" id="expensesTime">
+                        <select name="" id="expensesCategory" class="category-select">
+                            <option value="">Выберите категорию</option>
+                            <option value="еда">🍕 Еда</option>
+                            <option value="транспорт">🚗 Транспорт</option>
+                            <option value="развлечения">🎬 Развлечения</option>
+                            <option value="жилье">🏠 Жилье</option>
+                            <option value="здоровье">🏥 Здоровье</option>
+                            <option value="одежда">👕 Одежда</option>
+                            <option value="другое">💰 Другое</option>
+                        </select>
                         <button id="addExpenses">Добавить</button>
                     </div>
                 </div>
@@ -331,96 +342,9 @@
             <div class="transactions">
                 <div class="transactions-header">
                     <h2>Последние транзакции</h2>
-                    <div class="transactions-date">
-                        <p>Вчера</p>
-                        <span>16 января</span>
-                    </div>
                 </div>
 
-                <div class="transactions-list">
-                    <div class="transaction-item">
-                        <div class="transaction-icon shopping">
-                            <svg  viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3.33333 3.33334H16.6667L15 11.6667H5L3.33333 3.33334Z" stroke="#4A90E2" stroke-width="2"/>
-                                <path d="M5 15C5.55228 15 6 14.5523 6 14C6 13.4477 5.55228 13 5 13C4.44772 13 4 13.4477 4 14C4 14.5523 4.44772 15 5 15Z" fill="#4A90E2"/>
-                                <path d="M15 15C15.5523 15 16 14.5523 16 14C16 13.4477 15.5523 13 15 13C14.4477 13 14 13.4477 14 14C14 14.5523 14.4477 15 15 15Z" fill="#4A90E2"/>
-                            </svg>
-                        </div>
-                        <div class="transaction-info">
-                            <p class="transaction-name">Магнит</p>
-                            <p class="transaction-category">Супермаркеты</p>
-                        </div>
-                        <div class="transaction-amount negative">
-                            <p>-544,87₽</p>
-                        </div>
-                    </div>
-
-                    <div class="transaction-item">
-                        <div class="transaction-icon subscription">
-                            <svg  viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="8" stroke="#9B59B6" stroke-width="2"/>
-                                <path d="M10 6V10L13 13" stroke="#9B59B6" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="transaction-info">
-                            <p class="transaction-name">Яндекс Плюс</p>
-                            <p class="transaction-category">Подписка</p>
-                        </div>
-                        <div class="transaction-amount negative">
-                            <p>-299₽</p>
-                        </div>
-                    </div>
-
-                    <div class="transaction-item">
-                        <div class="transaction-icon digital">
-                            <svg  viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="2" y="4" width="16" height="12" rx="2" stroke="#2ECC71" stroke-width="2"/>
-                                <path d="M6 8L10 10L14 8" stroke="#2ECC71" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="transaction-info">
-                            <p class="transaction-name">МТС</p>
-                            <p class="transaction-category">Цифровые товары</p>
-                        </div>
-                        <div class="transaction-amount negative">
-                            <p>-430₽</p>
-                        </div>
-                    </div>
-
-                    <div class="transaction-item">
-                        <div class="transaction-icon beauty">
-                            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="8" r="4" stroke="#E91E63" stroke-width="2"/>
-                                <path d="M6 14H14L13 18H7L6 14Z" stroke="#E91E63" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="transaction-info">
-                            <p class="transaction-name">Подружка</p>
-                            <p class="transaction-category">Красота</p>
-                        </div>
-                        <div class="transaction-amount negative">
-                            <p>-1193,96₽</p>
-                        </div>
-                    </div>
-
-                    <div class="transaction-item">
-                        <div class="transaction-icon transport">
-                            <svg  viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="2" y="6" width="16" height="8" rx="2" stroke="#FF9500" stroke-width="2"/>
-                                <circle cx="6" cy="14" r="2" stroke="#FF9500" stroke-width="2"/>
-                                <circle cx="14" cy="14" r="2" stroke="#FF9500" stroke-width="2"/>
-                                <path d="M2 10H18" stroke="#FF9500" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="transaction-info">
-                            <p class="transaction-name">СберТройка</p>
-                            <p class="transaction-category">Транспорт</p>
-                        </div>
-                        <div class="transaction-amount negative">
-                            <p>-40₽</p>
-                        </div>
-                    </div>
-                </div>
+                <div class="transactions-list" id="transactionsList"></div>
             </div>
 
             <div class="fin-health"><a href="#">

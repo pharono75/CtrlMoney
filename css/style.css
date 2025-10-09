@@ -97,7 +97,7 @@ body{
     display: flex;
     align-items: flex-start;
     gap: calc(var(--index) * 0.53);
-    padding: calc(var(--index) * 0.8) 0 0 calc(var(--index) * 2);
+    padding: calc(var(--index) * 0.4) 0 0 calc(var(--index) * 2);
 }
 
 /*Общие*/
@@ -523,9 +523,8 @@ body{
     padding: calc(var(--index) * 0.67);
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-weight: 500;
-    margin-bottom: calc(var(--index) * 0.67);
+    margin-bottom: calc(var(--index) * 0.55);
     max-width: calc(var(--index) * 33.33);
-
 }
 
 .dashboard {
@@ -533,8 +532,8 @@ body{
     flex-direction: column;
     flex-grow: 1;
     border-radius: calc(var(--index) * 0.53);
-    padding: calc(var(--index) * 0.8);
-    margin-left: 2%;
+    padding: calc(var(--index) * 0.4);
+    margin-left: 1%;
     width: 100%;
     max-width: calc(var(--index) * 33.33);
 }
@@ -563,7 +562,7 @@ body{
     padding: calc(var(--index) * 0.27) calc(var(--index) * 0.4);
     border: none;
     cursor: pointer;
-    font-size: calc(var(--index) * 0.43);
+    font-size: calc(var(--index) * 0.5);
     border: solid rgba(0, 0, 0, 0.1) calc(var(--index) * 0.03);
     transition: all .25s ease-in-out;
 }
@@ -599,7 +598,7 @@ body{
 }
 
 .export span {
-    font-size: calc(var(--index) * 0.43);
+    font-size: calc(var(--index) * 0.6);
 }
 
 .export-buttons {
@@ -747,6 +746,12 @@ body{
     margin-bottom: calc(var(--index) * 0.5);
 }
 
+.transaction-date-header {
+    font-weight: 600;
+    color: #999;
+    font-size: 0.9em;
+}
+
 .transactions-header h2 {
     color: #333;
     font-size: calc(var(--index) * 0.53);
@@ -791,30 +796,33 @@ body{
     border-radius: calc(var(--index) * 0.2);
 }
 
-.transaction-icon svg {
-    width: 70%;
-    height: 70%;
+.transaction-icon.emoji-bg {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
-.transaction-icon.shopping {
-    background-color: rgba(74, 144, 226, 0.2);
+.transaction-icon.emoji-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 100, 100, 0.6), rgba(255, 200, 150, 0.4));
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    z-index: 0;
 }
 
-.transaction-icon.subscription {
-    background-color: rgba(155, 89, 182, 0.2);
+.transaction-icon .emoji {
+    position: relative;
+    z-index: 1;
+    font-size: 20px;
 }
 
-.transaction-icon.digital {
-    background-color: rgba(46, 204, 113, 0.2);
-}
-
-.transaction-icon.beauty {
-    background-color: rgba(233, 30, 99, 0.2);
-}
-
-.transaction-icon.transport {
-    background-color: rgba(255, 149, 0, 0.2);
-}
 
 .transaction-info {
     flex-grow: 1;
@@ -822,19 +830,19 @@ body{
 
 .transaction-name {
     color: #333;
-    font-size: calc(var(--index) * 0.43);
+    font-size: calc(var(--index) * 0.5);
     font-weight: 600;
     margin-bottom: calc(var(--index) * 0.07);
 }
 
 .transaction-category {
     color: #666;
-    font-size: calc(var(--index) * 0.37);
+    font-size: calc(var(--index) * 0.4);
 }
 
 .transaction-amount {
     font-weight: 600;
-    font-size: calc(var(--index) * 0.43);
+    font-size: calc(var(--index) * 0.5);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -844,6 +852,10 @@ body{
 
 .transaction-amount.negative {
     color: #F44336;
+}
+
+.transaction-amount.positive {
+    color: #4CAF50;
 }
 
 .fin-health {
