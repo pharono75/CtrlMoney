@@ -100,7 +100,10 @@
                     <div class="modal-content">
                         <span class="close" id="closeIncomeModal">&times;</span>
                         <h2>Добавить доход</h2>
+                        <input type="text" id="incomeName" placeholder="Введите название">
                         <input type="number" id="incomeAmount" placeholder="Введите сумму">
+                        <input type="date" id="incomeDate">
+                        <input type="time" id="incomeTime">
                         <button id="addIncome">Добавить</button>
                     </div>
                 </div>
@@ -154,7 +157,8 @@
                 </button>
                 </div>
 
-                <div class="menu-btn menu-btn-actions"><button>
+                <div class="menu-btn menu-btn-actions">
+                    <button>
                     <div class="menu-img-actions menu-img">
                         <svg viewBox="0 0 42 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <ellipse cx="5" cy="5.51578" rx="5" ry="4.85904" fill="#FF5858"/>
@@ -163,8 +167,8 @@
                         </svg>
                     </div>
                     <p>Действия</p>
+                    </button>
                 </div>
-                </button>
             </div>
 
                 <div class="menu-accounts">
@@ -178,53 +182,44 @@
                         <h2>Счета</h2>
                     </div>
                     
-                    <div class="menu-accounts-list">
-                        <div class="menu-account">
-                            <div class="menu-account-circle">
-                                <div class="menu-account-img">
-                                    <svg  viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="13" cy="9" r="3.5" stroke="#4A4A4A" stroke-width="2"/>
-                                        <circle cx="13" cy="9" r="1.5" fill="#4A4A4A"/>
-                                        <path d="M18.5 17H20V12.5H21V11.5H20V6.5H21V5.5H20V1H1V17H2.5M18.5 17V18H16.5V17M18.5 17H16.5M16.5 17H4.5M4.5 17V18H2.5V17M4.5 17H2.5" stroke="#4A4A4A" stroke-width="2"/>
-                                        <rect x="3.5" y="5.5" width="2" height="7" rx="1" fill="#4A4A4A"/>
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="menu-account-info">
-                                <p class="account-name">Вклад Тинькофф</p>
-                                <p class="account-amount">78 231,12₽</p>
-                            </div>
-                        </div>
-                        
-                        <div class="menu-account">
-                            <div class="menu-account-circle">
-                                <div class="menu-account-img">
-                                    <svg  viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="13" cy="9" r="3.5" stroke="#4A4A4A" stroke-width="2"/>
-                                        <circle cx="13" cy="9" r="1.5" fill="#4A4A4A"/>
-                                        <path d="M18.5 17H20V12.5H21V11.5H20V6.5H21V5.5H20V1H1V17H2.5M18.5 17V18H16.5V17M18.5 17H16.5M16.5 17H4.5M4.5 17V18H2.5V17M4.5 17H2.5" stroke="#4A4A4A" stroke-width="2"/>
-                                        <rect x="3.5" y="5.5" width="2" height="7" rx="1" fill="#4A4A4A"/>
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="menu-account-info">
-                                <p class="account-name">Инвесткопилка</p>
-                                <p class="account-amount">25 000,12₽</p>
-                            </div>
-                        </div>
+                    <div class="menu-accounts-list" id="accountsList">
+                        <!-- Список счетов будет отрисовываться динамически через JS -->
                     </div>
 
-                    <div class="menu-add-btn"><button>
+                    <div class="menu-add-btn" id="accountMenu"><button id="addAccountBtn">
                         <p>Добавить счет</p>
                     </button>
+                    </div>
+
+                    <div class="modal" id="accountModal">
+                        <div class="modal-content">
+                            <span class="close" id="closeAccountModal">&times;</span>
+                            <h2 id="accountModalTitle">Добавить счет</h2>
+                            <input type="text" id="accountName" placeholder="Название счета">
+                            <input type="number" id="accountAmount" placeholder="Сумма">
+                            <select id="accountType" class="account-select">
+                                <option value="">Выберите тип счета</option>
+                                <option value="deposit">Вклад</option>
+                                <option value="debit">Дебетовый счет</option>
+                                <option value="credit">Кредитный счет</option>
+                                <option value="savings">Накопительный счет</option>
+                                <option value="investment">Инвестиционный счет</option>
+                                <option value="cash">Наличные</option>
+                            </select>
+                            <input type="text" id="accountDesc" placeholder="Описание (опционально)">
+                            <div style="display:flex;gap:.5em;">
+                                <button id="saveAccount">Сохранить</button>
+                                <button id="deleteAccount" style="background:#fff;color:#ff5858;border:1px solid #ff5858;display:none;">Удалить</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="economy">
                 <div class="period">
-                    <button class="period-btn active">Месяц</button>
-                    <button class="period-btn">Квартал</button>
-                    <button class="period-btn">Год</button>
+                    <button class="period-btn" data-period="week">Неделя</button>
+                    <button class="period-btn period-active" data-period="month">Месяц</button>
+                    <button class="period-btn" data-period="year">Год</button>
                 </div>
                 <div class="economy-row">
                     <div class="income">
@@ -273,9 +268,9 @@
         <div class="statistics-section">
             <div class="controls">
                 <div class="period">
-                    <button class="period-btn">Месяц</button>
-                    <button class="period-btn">Квартал</button>
-                    <button class="period-btn">Год</button>
+                    <button class="period-btn" data-period="week">Неделя</button>
+                    <button class="period-btn period-active" data-period="month">Месяц</button>
+                    <button class="period-btn" data-period="year">Год</button>
                 </div>
                 
                 <div class="export">
@@ -309,27 +304,17 @@
                     <div class="avg-values">
                         <div class="avg-expenses">
                             <p>Средние траты</p>
-                            <h3>24 069₽</h3>
+                            <h2><span id="avgExpensesText">24 069₽</span></h2>
                         </div>
                         <div class="avg-income">
                             <p>Средний доход</p>
-                            <h3>55 069₽</h3>
+                            <h2><span id="avgIncomeText">55 069₽</span></h2>
                         </div>
                     </div>
 
                     <div class="main-chart">
                         <div class="chart-placeholder">
                             <canvas id="incomeExpenseChart"></canvas>
-                        </div>
-                        <div class="chart-legend">
-                            <div class="legend-item">
-                                <div class="legend-color expenses"></div>
-                                <span>Траты</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color income"></div>
-                                <span>Доход</span>
-                            </div>
                         </div>
                     </div>
                 </div>

@@ -98,6 +98,8 @@ body{
     align-items: flex-start;
     gap: calc(var(--index) * 0.53);
     padding: calc(var(--index) * 0.4) 0 0 calc(var(--index) * 2);
+    position: relative;
+    z-index: 1;
 }
 
 /*Общие*/
@@ -209,23 +211,66 @@ body{
 .modal {
     display: none;
     position: fixed;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     background: rgba(0, 0, 0, .5);
+    z-index: 1000;
+}
+
+.modal[style*="display: block"] {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-content {
     background: #fff;
-    padding: 20px;
-    margin: 15% auto;
-    width: 300px;
-    border-radius: 8px;
+    padding: calc(var(--index) * 1);
+    width: calc(var(--index) * 15);
+    border-radius: calc(var(--index) * 0.5);
+    position: relative;
+    z-index: 1001;
+    transform: translateY(0);
+    margin: 0;
+}
+
+.modal-content input,
+.modal-content select,
+.modal-content button {
+    width: 100%;
+    margin-bottom: calc(var(--index) * 0.5);
+    padding: calc(var(--index) * 0.4);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: calc(var(--index) * 0.27);
+    font-size: calc(var(--index) * 0.6);
+}
+
+.modal-content button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.modal-content button:hover {
+    opacity: 0.9;
 }
 
 .close {
-    float: right;
+    position: absolute;
+    right: calc(var(--index) * 0.8);
+    top: calc(var(--index) * 0.8);
     cursor: pointer;
+    font-size: calc(var(--index) * 1);
+    color: rgba(0, 0, 0, 0.5);
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: var(--primary-color);
 }
 
 /*Счета*/
@@ -290,6 +335,29 @@ body{
 .menu-account:hover {
     transform: translateY(calc(var(--index) * -0.03));
     background-color: #ffc9c9;
+}
+
+/* Отключаем hover для состояния, когда нет счетов */
+.menu-account.no-accounts {
+    cursor: default;
+    transform: none;
+    background-color: transparent;
+}
+.menu-account.no-accounts:hover {
+    transform: none;
+    background-color: transparent;
+}
+
+/* Если нет счетов — не показываем hover и не делаем элемент кликабельным */
+.menu-account.no-accounts {
+    cursor: default;
+    border: none;
+    transform: none;
+}
+
+.menu-account.no-accounts .menu-account-circle,
+.menu-account.no-accounts .menu-account-info {
+    opacity: 0.85;
 }
 
 .menu-account-info {
@@ -521,7 +589,6 @@ body{
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: calc(var(--index) * 0.53);
     padding: calc(var(--index) * 0.67);
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-weight: 500;
     margin-bottom: calc(var(--index) * 0.55);
     max-width: calc(var(--index) * 33.33);
@@ -568,11 +635,8 @@ body{
 }
 
 .period-btn:first-child {
-    background-color: var(--primary-color);
     border-radius: calc(var(--index) * 0.27) 0 0 calc(var(--index) * 0.27);
-    color: #fff;
-    border: none;
-    transition: all .25s ease-in-out;
+
 
 }
 
@@ -585,7 +649,14 @@ body{
     background-color: #ffc9c9;
 }
 
-.period-btn:first-child:hover {
+.period-btn.period-active {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    transition: all .25s ease-in-out;
+}
+
+.period-btn.period-active:hover {
     background-color: #FF5858;
     filter: brightness(1.5);
 }
@@ -645,11 +716,16 @@ body{
 .wrapper {
     display: flex;
     align-items: flex-start;
+    gap: calc(var(--index) * 1);
+    position: relative;
 }
 
 .avg-values {
     display: flex;
     flex-direction: column;
+    min-width: calc(var(--index) * 8); /* Минимальная ширина для средних значений */
+    max-width: calc(var(--index) * 12); /* Максимальная ширина */
+    width: 25%; /* Занимает 25% от доступного пространства */
 }
 
 .avg-expenses,
@@ -658,6 +734,8 @@ body{
     flex-direction: column;
     flex: 1;
     padding: calc(var(--index) * 0.27);
+    border-radius: calc(var(--index) * 0.27);
+    margin-bottom: calc(var(--index) * 0.5);
 }
 
 .avg-expenses p,
@@ -667,9 +745,9 @@ body{
     margin-bottom: calc(var(--index) * 0.13);
 }
 
-.avg-expenses h3,
-.avg-income h3 {
-    font-size: calc(var(--index) * 1.6);
+.avg-expenses h2,
+.avg-income h2 {
+    font-size: calc(var(--index)*1.25);
     font-weight: 500;
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -683,17 +761,21 @@ body{
 /* Основной график*/
 .main-chart {
     flex: 1;
+    min-width: 0; /* Позволяет графику сжиматься */
+    width: 75%; /* Занимает оставшиеся 75% пространства */
 }
 
 .chart-placeholder {
     display: flex;
     border-radius: calc(var(--index) * 0.27);
     padding: calc(var(--index) * 0.5);
+    height: 100%;
 }
 
 .chart-placeholder canvas {
-    width: 100%;
+    width: 100% ;
     height: 100%;
+    max-height: calc(var(--index) * 15);
 }
 
 .chart-legend {
