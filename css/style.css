@@ -383,6 +383,10 @@ body{
 .menu-accounts-list {
     display: flex;
     flex-direction: column;
+    max-height: calc(var(--index) * 8.5); /* ~4 элемента */
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 5px; /* небольшой отступ для скроллбара */
 }
 
 .menu-add-btn {
@@ -858,6 +862,10 @@ body{
     display: flex;
     flex-direction: column;
     gap: calc(var(--index) * 0.4);
+    max-height: calc(var(--index) * 14); /* Можете подобрать высоту */
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 5px; /* небольшой отступ для скроллбара */
 }
 
 .transaction-item {
@@ -1043,3 +1051,550 @@ body{
     margin: 0;
     opacity: .85;
 }
+
+/* Стили для блока целей */
+.goals-section {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: calc(var(--index) * 0.53);
+    padding: calc(var(--index) * 0.53);
+    margin-top: calc(var(--index) * 0.53);
+    max-height: calc(var(--index) * 10); /* Можете подобрать высоту */
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 5px; /* небольшой отступ для скроллбара */
+    max-width: calc(var(--index) * 18);
+}
+
+.goals-header {
+    margin-bottom: calc(var(--index) * 0.4);
+}
+
+.goals-header h2 {
+    font-size: calc(var(--index) * 0.67);
+    font-weight: 500;
+}
+
+.goal-item {
+    background: white;
+    border-radius: calc(var(--index) * 0.27);
+    padding: calc(var(--index) * 0.4);
+    margin-bottom: calc(var(--index) * 0.33);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.goal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: calc(var(--index) * 0.27);
+}
+
+.goal-title {
+    font-weight: 500;
+    font-size: calc(var(--index) * 0.5);
+    flex: 1;
+}
+
+.goal-percentage {
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: calc(var(--index) * 0.47);
+}
+
+.goal-progress {
+    background: #EFEFEF;
+    border-radius: calc(var(--index) * 0.53);
+    height: calc(var(--index) * 0.4);
+    overflow: hidden;
+    position: relative;
+}
+
+.goal-amounts {
+    display: flex;
+    justify-content: space-between;
+    font-size: calc(var(--index) * 0.37);
+    color: #666;
+    margin-top: calc(var(--index) * 0.2);
+}
+
+/* Стили для фиксированного заголовка целей */
+.goals-section {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: calc(var(--index) * 0.53);
+    padding: calc(var(--index) * 0.53);
+    margin-top: calc(var(--index) * 0.53);
+    display: flex;
+    flex-direction: column;
+    height: calc(var(--index) * 10);
+}
+
+.goals-header {
+    margin-bottom: calc(var(--index) * 0.4);
+    flex-shrink: 0;
+}
+
+.goals-header h2 {
+    font-size: calc(var(--index) * 0.67);
+    font-weight: 500;
+}
+
+.goals-list {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 5px;
+}
+
+/* Стили для деталей в модальных окнах */
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: calc(var(--index) * 0.3) 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 500;
+    color: #666;
+    font-size: calc(var(--index) * 0.5);
+}
+
+.detail-value {
+    font-weight: 400;
+    color: #333;
+    font-size: calc(var(--index) * 0.5);
+    text-align: right;
+    flex: 1;
+    margin-left: calc(var(--index) * 0.5);
+}
+
+.transaction-details,
+.account-details,
+.goal-details {
+    margin: calc(var(--index) * 0.5) 0;
+}
+
+
+/* Стили для целей */
+.goal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: calc(var(--index) * 0.5) 0;
+    margin-bottom: calc(var(--index) * 0.5);
+}
+
+.goal-info {
+    flex: 1;
+}
+
+.goal-title {
+    font-size: calc(var(--index) * 0.8);
+    font-weight: 600;
+    margin-bottom: calc(var(--index) * 0.2);
+    letter-spacing: 0.5px;
+}
+
+.goal-amounts-large {
+    font-size: calc(var(--index) * 1);
+    font-weight: 700;
+    color: #FF5858;
+}
+
+.goal-progress-circle {
+    position: relative;
+    width: calc(var(--index) * 4);
+    height: calc(var(--index) * 4);
+    flex-shrink: 0;
+}
+
+.goal-progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: calc(var(--index) * 0.6);
+    font-weight: 700;
+    color: #FF5858;
+}
+
+
+
+/* Исправлен цвет счетов с зеленого на нейтральный */
+.account-amount {
+    font-weight: 700;
+    font-size: calc(var(--index) * 0.5);
+    color: #333; /* Изменено с #4CAF50 на #333 */
+    margin: 0;
+    margin-left: calc(var(--index) * 0.27);
+    flex-shrink: 0;
+}
+
+/* Исправлены цвета транзакций */
+.transaction-amount.negative {
+    color: #FF5858; /* Более консистентный цвет */
+}
+
+.transaction-amount.positive {
+    color: #4CAF50;
+}
+
+
+.second-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--index) * 0.5);
+}
+
+/* Улучшена адаптивность текста */
+.menu-capital h2,
+.income h2,
+.expenses h2,
+.economy-statistic h2,
+.avg-expenses h2,
+.avg-income h2 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    transition: font-size 0.3s ease;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    line-height: 1.2;
+}
+
+/* Исправлен z-index для модальных окон */
+.modal {
+    z-index: 10000;
+}
+
+.modal-content {
+    z-index: 10001;
+}
+
+/* Кнопки действий */
+.modal-actions {
+    display: flex;
+    gap: calc(var(--index) * 0.3);
+    margin-top: calc(var(--index) * 0.5);
+}
+
+.btn-edit {
+    flex: 1;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: calc(var(--index) * 0.4);
+    border-radius: calc(var(--index) * 0.27);
+    cursor: pointer;
+    font-size: calc(var(--index) * 0.5);
+    transition: opacity 0.3s ease;
+}
+
+.btn-delete {
+    flex: 1;
+    background: #fff;
+    color: #ff5858;
+    border: 1px solid #ff5858;
+    padding: calc(var(--index) * 0.4);
+    border-radius: calc(var(--index) * 0.27);
+    cursor: pointer;
+    font-size: calc(var(--index) * 0.5);
+    transition: all 0.3s ease;
+}
+
+.btn-edit:hover {
+    opacity: 0.9;
+}
+
+.btn-delete:hover {
+    background: #ff5858;
+    color: #fff;
+}
+
+/* Детали */
+.transaction-details,
+.goal-details {
+    margin: calc(var(--index) * 0.5) 0;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: calc(var(--index) * 0.3) 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 500;
+    color: #666;
+    font-size: calc(var(--index) * 0.5);
+}
+
+.detail-value {
+    font-weight: 400;
+    color: #333;
+    font-size: calc(var(--index) * 0.5);
+    text-align: right;
+}
+
+/* Стили для модальных окон просмотра счетов */
+.account-header {
+    text-align: center;
+    padding: calc(var(--index) * 0.5) 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: calc(var(--index) * 0.5);
+}
+
+.account-emoji {
+    font-size: calc(var(--index) * 2);
+        background: linear-gradient(135deg, #FF8A5C, #FF5858);
+    margin-bottom: calc(var(--index) * 0.3);
+    width: calc(var(--index) * 3);
+    height: calc(var(--index) * 3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto calc(var(--index) * 0.3);
+}
+
+.account-emoji .emoji {
+    font-size: calc(var(--index) * 1.2);
+}
+
+.account-title {
+    font-size: calc(var(--index) * 0.8);
+    font-weight: 600;
+    margin-bottom: calc(var(--index) * 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.account-amount-large {
+    font-size: calc(var(--index) * 1.2);
+    font-weight: 700;
+}
+
+/* Улучшенный внешний вид списка счетов */
+.menu-account {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    margin-top: calc(var(--index) * 0.33);
+    border-radius: calc(var(--index) * 0.4);
+    width: calc(var(--index) * 11.33);
+    height: calc(var(--index) * 2);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    padding: 0 calc(var(--index) * 0.27);
+}
+
+.menu-account:hover {
+    transform: translateY(calc(var(--index) * -0.07));
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background: linear-gradient(135deg, #fff5f5, #ffe5e5);
+    border-color: #FF5858;
+}
+
+.menu-account-circle {
+    width: calc(var(--index) * 1.4);
+    height: calc(var(--index) * 1.4);
+    background: linear-gradient(135deg, #FF8A5C, #FF5858);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    margin-right: calc(var(--index) * 0.4);
+    box-shadow: 0 2px 4px rgba(255, 88, 88, 0.3);
+}
+
+.menu-account-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.menu-account-img span {
+    font-size: calc(var(--index) * 0.8);
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+}
+
+.menu-account-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    flex: 1;
+}
+
+.account-name {
+    font-weight: 600;
+    font-size: calc(var(--index) * 0.5);
+    color: #333;
+    margin: 0;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.account-amount {
+    font-weight: 700;
+    font-size: calc(var(--index) * 0.5);
+    margin: 0;
+    margin-left: calc(var(--index) * 0.27);
+    flex-shrink: 0;
+}
+
+/* Стили для модального окна просмотра транзакции */
+.view-modal {
+    max-width: calc(var(--index) * 18);
+}
+
+.transaction-header {
+    text-align: center;
+    padding: calc(var(--index) * 0.5) 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: calc(var(--index) * 0.5);
+}
+
+.transaction-emoji {
+    font-size: calc(var(--index) * 2);
+    margin-bottom: calc(var(--index) * 0.3);
+    width: calc(var(--index) * 3);
+    height: calc(var(--index) * 3);
+    background: linear-gradient(135deg, #FF8A5C, #FF5858);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto calc(var(--index) * 0.3);
+}
+
+.transaction-emoji .emoji {
+    font-size: calc(var(--index) * 1.2);
+}
+
+.transaction-title {
+    font-size: calc(var(--index) * 0.8);
+    font-weight: 600;
+    margin-bottom: calc(var(--index) * 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.transaction-amount-large {
+    font-size: calc(var(--index) * 1.2);
+    font-weight: 700;
+    color: #333;
+}
+
+.transaction-amount-large.income {
+    color: #4CAF50;
+}
+
+.transaction-amount-large.expense {
+    color: #FF5858;
+}
+
+/* Заголовок для деталей */
+.transaction-details h3 {
+    font-size: calc(var(--index) * 0.6);
+    font-weight: 600;
+    margin-bottom: calc(var(--index) * 0.4);
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Детали транзакций */
+.transaction-details {
+    margin: calc(var(--index) * 0.5) 0;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: calc(var(--index) * 0.3) 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 500;
+    color: #666;
+    font-size: calc(var(--index) * 0.5);
+}
+
+.detail-value {
+    font-weight: 400;
+    color: #333;
+    font-size: calc(var(--index) * 0.5);
+    text-align: right;
+}
+
+/* Кнопки действий в модальном окне */
+.modal-actions {
+    display: flex;
+    gap: calc(var(--index) * 0.3);
+    margin-top: calc(var(--index) * 0.5);
+}
+
+.btn-edit {
+    flex: 1;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: calc(var(--index) * 0.4);
+    border-radius: calc(var(--index) * 0.27);
+    cursor: pointer;
+    font-size: calc(var(--index) * 0.5);
+    transition: opacity 0.3s ease;
+}
+
+.btn-delete {
+    flex: 1;
+    background: #fff;
+    color: #ff5858;
+    border: 1px solid #ff5858;
+    padding: calc(var(--index) * 0.4);
+    border-radius: calc(var(--index) * 0.27);
+    cursor: pointer;
+    font-size: calc(var(--index) * 0.5);
+    transition: all 0.3s ease;
+}
+
+.btn-edit:hover {
+    opacity: 0.9;
+}
+
+.btn-delete:hover {
+    background: #ff5858;
+    color: #fff;
+}
+
+
+
+
+
+

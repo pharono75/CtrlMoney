@@ -99,7 +99,7 @@
                 <div class="modal" id="incomeModal">
                     <div class="modal-content">
                         <span class="close" id="closeIncomeModal">&times;</span>
-                        <h2>Добавить доход</h2>
+                        <h2>Добавить доход</h2> 
                         <input type="text" id="incomeName" placeholder="Введите название">
                         <input type="number" id="incomeAmount" placeholder="Введите сумму">
                         <input type="date" id="incomeDate">
@@ -155,6 +155,17 @@
                     </div>
                     <p>Добавить цель</p>
                 </button>
+                </div>
+
+                <div class="modal" id="goalModal">
+                    <div class="modal-content">
+                        <span class="close" id="closeGoalModal">&times;</span>
+                        <h2>Добавить цель</h2>
+                        <input type="text" id="goalName" placeholder="Название цели">
+                        <input type="number" id="goalTarget" placeholder="Целевая сумма">
+                        <input type="number" id="goalCurrent" placeholder="Текущая сумма" value="0">
+                        <button id="saveGoal">Сохранить цель</button>
+                    </div>
                 </div>
 
                 <div class="menu-btn menu-btn-actions">
@@ -331,8 +342,8 @@
 
                 <div class="transactions-list" id="transactionsList"></div>
             </div>
-
-            <div class="fin-health"><a href="#">
+            <div class="second-wrapper">
+                <div class="fin-health"><a href="#">
                 <div class="fin-heading">
                     <div class="heading-img">
                         <svg viewBox="0 0 31 29" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -354,6 +365,117 @@
                 </div>
             </a>
 
+            </div>
+
+            <div class="goals-section">
+                <div class="goals-header">
+                    <h2>Мои цели</h2>
+                </div>
+                <div class="goals-list" id="goalsList">
+                    <!-- Цели будут отображаться здесь -->
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно просмотра транзакции -->
+    <div class="modal" id="viewTransactionModal">
+        <div class="modal-content view-modal">
+            <span class="close" id="closeViewTransactionModal">&times;</span>
+            <div class="transaction-header">
+                <div class="transaction-emoji" id="viewTransactionEmoji"></div>
+                <h2 id="viewTransactionName" class="transaction-title">Название транзакции</h2>
+                <div id="viewTransactionAmount" class="transaction-amount-large"></div>
+            </div>
+            <div class="transaction-details">
+                <h3>Детали</h3>
+                <div class="detail-row">
+                    <span class="detail-label">Категория:</span>
+                    <span id="viewTransactionCategory" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Дата:</span>
+                    <span id="viewTransactionDate" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Время:</span>
+                    <span id="viewTransactionTime" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Тип:</span>
+                    <span id="viewTransactionType" class="detail-value"></span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="editViewTransaction" class="btn-edit">Редактировать</button>
+                <button id="deleteViewTransaction" class="btn-delete">Удалить</button>
+            </div>
+        </div>
+    </div>
+    <!-- Модальное окно просмотра счета -->
+    <div class="modal" id="viewAccountModal">
+        <div class="modal-content view-modal">
+            <span class="close" id="closeViewAccountModal">&times;</span>
+            <div class="account-header">
+                <div class="account-emoji" id="viewAccountEmoji"></div>
+                <h2 id="viewAccountName" class="account-title">Название счета</h2>
+                <div id="viewAccountAmount" class="account-amount-large"></div>
+            </div>
+            <div class="account-details">
+                <h3>Детали</h3>
+                <div class="detail-row">
+                    <span class="detail-label">Тип счета:</span>
+                    <span id="viewAccountType" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Описание:</span>
+                    <span id="viewAccountDesc" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Дата создания:</span>
+                    <span id="viewAccountCreated" class="detail-value"></span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="editViewAccount" class="btn-edit">Редактировать</button>
+                <button id="deleteViewAccount" class="btn-delete">Удалить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно просмотра цели -->
+    <div class="modal" id="viewGoalModal">
+        <div class="modal-content view-modal">
+            <span class="close" id="closeViewGoalModal">&times;</span>
+            <div class="goal-header">
+                <div class="goal-info">
+                    <h2 id="viewGoalName" class="goal-title">Название цели</h2>
+                    <div id="viewGoalAmounts" class="goal-amounts-large">0 / 0</div>
+                </div>
+                <div class="goal-progress-circle">
+                    <canvas id="viewGoalProgressChart"></canvas>
+                    <div class="goal-progress-text" id="viewGoalProgressText">0%</div>
+                </div>
+            </div>
+            <div class="goal-details">
+                <h3>Детали</h3>
+                <div class="detail-row">
+                    <span class="detail-label">Целевая сумма:</span>
+                    <span id="viewGoalTarget" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Текущая сумма:</span>
+                    <span id="viewGoalCurrent" class="detail-value"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Прогресс:</span>
+                    <span id="viewGoalProgress" class="detail-value"></span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="editViewGoal" class="btn-edit">Редактировать</button>
+                <button id="deleteViewGoal" class="btn-delete">Удалить</button>
             </div>
         </div>
     </div>
