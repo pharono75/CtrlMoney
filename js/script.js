@@ -1313,9 +1313,217 @@ document.addEventListener('DOMContentLoaded', function() {
     viewGoalAmounts = document.getElementById('viewGoalAmounts');
     viewGoalProgressText = document.getElementById('viewGoalProgressText');
 
-    // В DOMContentLoaded добавьте инициализацию новых элементов для счета:
-viewAccountEmoji = document.getElementById('viewAccountEmoji');
-viewAccountCreated = document.getElementById('viewAccountCreated');
+    viewAccountEmoji = document.getElementById('viewAccountEmoji');
+    viewAccountCreated = document.getElementById('viewAccountCreated');
+
+    // В разделе поиска элементов DOM добавьте:
+actionsModal = document.getElementById("actionsModal");
+closeActionsModal = document.getElementById("closeActionsModal");
+clearDataModal = document.getElementById("clearDataModal");
+closeClearDataModal = document.getElementById("closeClearDataModal");
+clearDataAction = document.getElementById("clearDataAction");
+exportDataAction = document.getElementById("exportDataAction");
+clearTransactionsCheckbox = document.getElementById("clearTransactions");
+clearAccountsCheckbox = document.getElementById("clearAccounts");
+clearGoalsCheckbox = document.getElementById("clearGoals");
+clearAllCheckbox = document.getElementById("clearAll");
+clearSelectedDataBtn = document.getElementById("clearSelectedData");
+actionsBtn = document.querySelector('.menu-btn-actions button');
+
+// В разделе установки слушателей событий добавьте:
+if (actionsBtn) {
+    actionsBtn.addEventListener('click', openActionsModal);
+}
+
+if (closeActionsModal) {
+    closeActionsModal.addEventListener('click', () => {
+        if (actionsModal) actionsModal.style.display = 'none';
+    });
+}
+
+if (closeClearDataModal) {
+    closeClearDataModal.addEventListener('click', () => {
+        if (clearDataModal) clearDataModal.style.display = 'none';
+    });
+}
+
+// Обработчики для карточек действий
+if (clearDataAction) {
+    clearDataAction.addEventListener('click', () => {
+        actionsModal.style.display = 'none';
+        openClearDataModal();
+    });
+}
+
+if (exportDataAction) {
+    exportDataAction.addEventListener('click', () => {
+        actionsModal.style.display = 'none';
+        exportAllData();
+    });
+}
+
+// Логика чекбоксов
+if (clearAllCheckbox) {
+    clearAllCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+            if (clearTransactionsCheckbox) clearTransactionsCheckbox.checked = true;
+            if (clearAccountsCheckbox) clearAccountsCheckbox.checked = true;
+            if (clearGoalsCheckbox) clearGoalsCheckbox.checked = true;
+            [clearTransactionsCheckbox, clearAccountsCheckbox, clearGoalsCheckbox].forEach(cb => {
+                if (cb) cb.disabled = true;
+            });
+        } else {
+            [clearTransactionsCheckbox, clearAccountsCheckbox, clearGoalsCheckbox].forEach(cb => {
+                if (cb) cb.disabled = false;
+            });
+        }
+    });
+}
+
+[clearTransactionsCheckbox, clearAccountsCheckbox, clearGoalsCheckbox].forEach(checkbox => {
+    if (checkbox) {
+        checkbox.addEventListener('change', function() {
+            if (!this.checked && clearAllCheckbox) {
+                clearAllCheckbox.checked = false;
+            }
+        });
+    }
+});
+
+if (clearSelectedDataBtn) {
+    clearSelectedDataBtn.addEventListener('click', clearSelectedData);
+}
+
+// Закрытие по клику вне окна
+window.addEventListener('click', (e) => {
+    if (e.target === actionsModal) actionsModal.style.display = 'none';
+    if (e.target === clearDataModal) clearDataModal.style.display = 'none';
+});
+
+// Функции (добавить после DOMContentLoaded):
+function openActionsModal() {
+    if (actionsModal) actionsModal.style.display = 'block';
+}
+
+function openClearDataModal() {
+    if (clearTransactionsCheckbox) {
+        clearTransactionsCheckbox.checked = true;
+        clearTransactionsCheckbox.disabled = false;
+    }
+    if (clearAccountsCheckbox) {
+        clearAccountsCheckbox.checked = false;
+        clearAccountsCheckbox.disabled = false;
+    }
+    if (clearGoalsCheckbox) {
+        clearGoalsCheckbox.checked = false;
+        clearGoalsCheckbox.disabled = false;
+    }
+    if (clearAllCheckbox) {
+        clearAllCheckbox.checked = false;
+    }
+    
+    if (clearDataModal) clearDataModal.style.display = 'block';
+}
+
+function clearSelectedData() {
+    const clearTransactions = clearTransactionsCheckbox ? clearTransactionsCheckbox.checked : false;
+    const clearAccounts = clearAccountsCheckbox ? clearAccountsCheckbox.checked : false;
+    const clearGoals = clearGoalsCheckbox ? clearGoalsCheckbox.checked : false;
+    const clearAll = clearAllCheckbox ? clearAllCheckbox.checked : false;
+    
+    let message = "Вы уверены, что хотите удалить";
+    let items = [];
+    
+    if (clearAll) {
+        message += " ВСЕ данные? Это действие нельзя отменить.";
+    } else {
+        if (clearTransactions) items.push("транзакции");
+        if (clearAccounts) items.push("счета");
+        if (clearGoals) items.push("цели");
+        
+        if (items.length === 0) {
+            alert("Выберите данные для удаления");
+            return;
+        }
+        
+        message += " " + items.join(", ") + "?";
+    }
+    
+    if (!confirm(message)) return;
+    
+    try {
+        if (clearAll || clearTransactions) {
+            localStorage.removeItem("income");
+            localStorage.removeItem("expenses");
+            localStorage.removeItem("incomeTransactions");
+            localStorage.removeItem("expensesTransactions");
+            income = 0;
+            expenses = 0;
+            incomeTransactions = [];
+            expensesTransactions = [];
+        }
+        
+        if (clearAll || clearAccounts) {
+            localStorage.removeItem("accounts");
+            accounts = [];
+        }
+        
+        if (clearAll || clearGoals) {
+            localStorage.removeItem("goals");
+            goals = [];
+        }
+        
+        updateBalance();
+        updateEconomy();
+        renderTransactionsList();
+        renderAccounts();
+        renderGoals();
+        
+        const activeBtn = document.querySelector('.dashboard .period-btn.period-active');
+        const currentPeriod = activeBtn ? activeBtn.getAttribute('data-period') : 'month';
+        updateChart(currentPeriod);
+        updateAverages(currentPeriod);
+        
+        clearDataModal.style.display = 'none';
+        
+        alert("Данные успешно удалены");
+        
+    } catch (error) {
+        console.error("Ошибка при удалении данных:", error);
+        alert("Произошла ошибка при удалении данных");
+    }
+}
+
+function exportAllData() {
+    try {
+        const data = {
+            income: income,
+            expenses: expenses,
+            accounts: accounts,
+            goals: goals,
+            incomeTransactions: incomeTransactions,
+            expensesTransactions: expensesTransactions,
+            exportDate: new Date().toISOString(),
+            app: "CtrlMoney"
+        };
+        
+        const dataStr = JSON.stringify(data, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(dataBlob);
+        link.download = `CtrlMoney_backup_${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        alert("Данные успешно экспортированы в файл");
+        
+    } catch (error) {
+        console.error("Ошибка при экспорте данных:", error);
+        alert("Произошла ошибка при экспорте данных");
+    }
+}
 
 // Обработчики закрытия модальных окон просмотра
 if (closeViewTransactionModal) closeViewTransactionModal.addEventListener('click', () => viewTransactionModal.style.display = 'none');

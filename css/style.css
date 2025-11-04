@@ -1593,8 +1593,143 @@ body{
     color: #fff;
 }
 
+/* Стили для модального окна действий в виде сетки */
+.actions-modal-horizontal {
+    max-width: calc(var(--index) * 25);
+    padding: calc(var(--index) * 1);
+    background: #FFFFFF;
+    border-radius: calc(var(--index) * 0.8);
+    box-shadow: 0 calc(var(--index) * 0.2) calc(var(--index) * 0.4) rgba(0, 0, 0, 0.1);
+}
 
+.actions-modal-horizontal h2 {
+    font-size: calc(var(--index) * 0.6);
+    font-weight: 400;
+    color: #333;
+    margin-bottom: calc(var(--index) * 0.8);
+    text-align: center;
+}
 
+.actions-horizontal {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: calc(var(--index) * 1.5);
+    width: 100%;
+    padding: calc(var(--index) * 0.5) calc(var(--index) * 1);
+}
 
+.action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--index) * 0.3);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    min-width: calc(var(--index) * 4);
+    background-color: #FFFFFF;
+}
 
+.action-icon {
+    width: calc(var(--index) * 2);
+    height: calc(var(--index) * 2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F0F0F0;
+    border: var(--primary-color) calc(var(--index)*.075) solid;
+    border-radius: calc(var(--index)*.5);
+    transition: all ease-in-out .25s;
+}
+
+.action-icon:hover {
+    background-color: #ffc9c9;
+    transform: translateY(calc(var(--index)*-.1));
+}
+
+.action-icon svg {
+    width: 60%;
+    height: 60%;
+}
+
+.action-label {
+    font-size: calc(var(--index) * 0.45);
+    font-weight: 400;
+    color: #666;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* Подмодальное окно для очистки данных */
+#clearDataModal .modal-content {
+    max-width: calc(var(--index) * 18);
+    padding: calc(var(--index) * 1);
+    background: white;
+    border-radius: calc(var(--index) * 0.5);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+#clearDataModal h2 {
+    font-size: calc(var(--index) * 0.7);
+    margin-bottom: calc(var(--index) * 0.5);
+    text-align: center;
+    color: #333;
+}
+
+.section-description {
+    font-size: calc(var(--index) * 0.45);
+    color: #666;
+    margin-bottom: calc(var(--index) * 0.7);
+    text-align: center;
+}
+
+.clear-options {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--index) * 0.3);
+    margin-bottom: calc(var(--index) * 0.7);
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--index) * 0.3);
+    font-size: calc(var(--index) * 0.5);
+    color: #333;
+    padding: calc(var(--index) * 0.2);
+    border-radius: calc(var(--index) * 0.3);
+    transition: background 0.2s;
+}
+
+.checkbox-label:hover {
+    background: #f8f8f8;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: calc(var(--index) * 0.7);
+    height: calc(var(--index) * 0.7);
+    margin: 0;
+}
+
+#clearSelectedData {
+    display: flex;
+    background: #FF5858;
+    color: white;
+    padding: calc(var(--index) * 0.5);
+    border-radius: calc(var(--index) * 0.4);
+    text-align: center;
+    cursor: pointer;
+    font-size: calc(var(--index) * 0.55);
+    transition: background 0.3s;
+    max-width: 90%;
+    align-items: center;
+    justify-content: center;
+}
+
+#clearSelectedData:hover {
+    background: #e03e3e;
+}
 
