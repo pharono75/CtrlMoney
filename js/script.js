@@ -1137,24 +1137,19 @@ function addIncome() {
         }
         
         if (editingTransactionIndex !== null && editingTransactionIsIncome) {
-            // Редактируем существующую транзакцию
             const oldAmount = incomeTransactions[editingTransactionIndex].amount;
             incomeTransactions[editingTransactionIndex] = transaction;
             
-            // Обновляем общий доход с учетом изменения суммы
             income = income - oldAmount + amount;
             localStorage.setItem("income", income);
         } else {
-            // Добавляем новую транзакцию
             incomeTransactions.push(transaction);
             updateIncome(amount);
         }
         
         localStorage.setItem("incomeTransactions", JSON.stringify(incomeTransactions));
         
-        if (editingTransactionIndex === null) {
-            updateIncome(amount);
-        } else {
+        if (editingTransactionIndex !== null) {
             updateBalance();
             updateEconomy();
         }
@@ -1174,6 +1169,7 @@ function addIncome() {
     updateChart(currentPeriod)
     updateAverages(currentPeriod)
 }
+
 
 function addExpense() {
     let inputValue = expensesInput.value.trim().replace(',', '.')
