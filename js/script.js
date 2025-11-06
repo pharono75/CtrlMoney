@@ -1117,122 +1117,99 @@ function resetExpensesModal() {
 
 function addIncome() {
     const amount = parseFloat(incomeInput.value);
-    const selectedTime = incomeTime ? incomeTime.value : '',
-        selectedDate = incomeDate ? incomeDate.value : '',
-        name = incomeName ? incomeName.value.trim() : '';
-    
+    const selectedTime = incomeTime?.value || '';
+    const selectedDate = incomeDate?.value || '';
+    const name = incomeName?.value.trim() || '';
+
     if (!isNaN(amount) && amount > 0) {
-        let dateTime
-        if (selectedDate && selectedTime) {
-            dateTime = new Date(selectedDate + 'T' + selectedTime)
-        } else {
-            dateTime = new Date()
-        }
+        const dateTime = selectedDate && selectedTime
+            ? new Date(`${selectedDate}T${selectedTime}`)
+            : new Date();
 
         const transaction = {
-            amount: amount,
+            amount,
             name: name || 'Доход',
             category: 'доход',
             date: dateTime.toISOString(),
-        }
-        
+        };
+
         if (editingTransactionIndex !== null && editingTransactionIsIncome) {
             const oldAmount = incomeTransactions[editingTransactionIndex].amount;
             incomeTransactions[editingTransactionIndex] = transaction;
-            
             income = income - oldAmount + amount;
             localStorage.setItem("income", income);
         } else {
             incomeTransactions.push(transaction);
-            updateIncome(amount);
+            updateIncome(amount); // ✅ Один раз обновляем доход
         }
-        
+
         localStorage.setItem("incomeTransactions", JSON.stringify(incomeTransactions));
-        
-        if (editingTransactionIndex !== null) {
-            updateBalance();
-            updateEconomy();
-        }
-        
+        updateBalance();
+        updateEconomy();
         renderTransactionsList();
-        
+
         resetIncomeModal();
         incomeModal.style.display = "none";
         editingTransactionIndex = null;
         editingTransactionIsIncome = null;
     } else {
-        alert("Введите корректную сумму")
+        alert("Введите корректную сумму");
     }
 
-    const activeBtn = document.querySelector('.dashboard .period-btn.period-active')
-    const currentPeriod = activeBtn ? activeBtn.getAttribute('data-period') : 'month'
-    updateChart(currentPeriod)
-    updateAverages(currentPeriod)
+    const currentPeriod = document.querySelector('.dashboard .period-btn.period-active')?.dataset.period || 'month';
+    updateChart(currentPeriod);
+    updateAverages(currentPeriod);
 }
 
-
 function addExpense() {
-    let inputValue = expensesInput.value.trim().replace(',', '.')
-    let amount = parseFloat(inputValue)
-    const category = expensesCategory.value,
-        selectedTime = expensesTime.value,
-        selectedDate = expensesDate.value,
-        name = expensesName.value.trim()
+    let inputValue = expensesInput.value.trim().replace(',', '.');
+    let amount = parseFloat(inputValue);
+    const category = expensesCategory.value.trim();
+    const selectedTime = expensesTime.value;
+    const selectedDate = expensesDate.value;
+    const name = expensesName.value.trim();
 
-    if (!isNaN(amount) && amount !== 0 && category.trim() !== '' && name !== '') {
-        amount = Math.abs(amount)
-        let dateTime
-        if (selectedTime && selectedDate) {
-            dateTime = new Date(selectedDate + 'T' + selectedTime)
-        } else {
-            dateTime = new Date()
-        }
+    if (!isNaN(amount) && amount > 0 && category && name) {
+        amount = Math.abs(amount);
+        const dateTime = selectedTime && selectedDate
+            ? new Date(`${selectedDate}T${selectedTime}`)
+            : new Date();
 
         const transaction = {
-            amount: amount,
-            name: name,
-            category: category,
+            amount,
+            name,
+            category,
             date: dateTime.toISOString(),
-        }
+        };
 
         if (editingTransactionIndex !== null && !editingTransactionIsIncome) {
-            // Редактируем существующую транзакцию
             const oldAmount = expensesTransactions[editingTransactionIndex].amount;
             expensesTransactions[editingTransactionIndex] = transaction;
-            
-            // Обновляем общие расходы с учетом изменения суммы
             expenses = expenses - oldAmount + amount;
             localStorage.setItem("expenses", expenses);
         } else {
-            // Добавляем новую транзакцию
             expensesTransactions.push(transaction);
-            updateExpenses(amount);
+            updateExpenses(amount); // ✅ Один раз обновляем расход
         }
-        
-        localStorage.setItem("expensesTransactions", JSON.stringify(expensesTransactions))
-        
-        if (editingTransactionIndex === null) {
-            updateExpenses(amount);
-        } else {
-            updateBalance();
-            updateEconomy();
-        }
-        
-        renderTransactionsList()
-        
-        resetExpensesModal()
-        expensesModal.style.display = "none"
+
+        localStorage.setItem("expensesTransactions", JSON.stringify(expensesTransactions));
+        updateBalance();
+        updateEconomy();
+        renderTransactionsList();
+
+        resetExpensesModal();
+        expensesModal.style.display = "none";
         editingTransactionIndex = null;
         editingTransactionIsIncome = null;
     } else {
-        alert("Заполните все поля корректно")
+        alert("Заполните все поля корректно");
     }
 
-    const activeBtn = document.querySelector('.dashboard .period-btn.period-active')
-    const currentPeriod = activeBtn ? activeBtn.getAttribute('data-period') : 'month'
-    updateChart(currentPeriod)
-    updateAverages(currentPeriod)
+    const currentPeriod = document.querySelector('.dashboard .period-btn.period-active')?.dataset.period || 'month';
+    updateChart(currentPeriod);
+    updateAverages(currentPeriod);
 }
+
 
 
 // --- Инициализация ---
