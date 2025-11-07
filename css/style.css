@@ -8,6 +8,12 @@
 :root {
     --index: calc(1vw + 1vh);
     --primary-color: #FF5858;
+    --success-color: #10B981;
+    --danger-color: #EF4444;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --hover-shadow: rgba(0, 0, 0, 0.2);
+    --border-color: #E5E7EB;
+    --transition-time: 0.2s;
 }
 
 button {
@@ -242,7 +248,7 @@ body{
     width: 100%;
     margin-bottom: calc(var(--index) * 0.5);
     padding: calc(var(--index) * 0.4);
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: calc(var(--index) * .1) solid rgba(0, 0, 0, 0.1);
     border-radius: calc(var(--index) * 0.27);
     font-size: calc(var(--index) * 0.6);
 }
@@ -318,25 +324,6 @@ body{
     object-fit: contain;
 }
 
-
-.menu-account {
-    display: flex;
-    align-items: center;
-    background-color: #ffff;
-    margin-top: calc(var(--index) * 0.33);
-    border-radius: calc(var(--index) * 0.4);
-    width: calc(var(--index) * 11.33);
-    height: calc(var(--index) * 2);
-    border: calc(var(--index) * 0.03) solid rgba(0, 0, 0, .1);
-    cursor: pointer;
-    transition: all .25s ease-in-out;
-}
-
-.menu-account:hover {
-    transform: translateY(calc(var(--index) * -0.03));
-    background-color: #ffc9c9;
-}
-
 /* Отключаем hover для состояния, когда нет счетов */
 .menu-account.no-accounts {
     cursor: default;
@@ -386,7 +373,7 @@ body{
     max-height: calc(var(--index) * 8.5); /* ~4 элемента */
     overflow-y: auto;
     overflow-x: hidden;
-    padding-right: 5px; /* небольшой отступ для скроллбара */
+    padding-right: calc(var(--index) *.5); /* небольшой отступ для скроллбара */
 }
 
 .menu-add-btn {
@@ -865,7 +852,7 @@ body{
     max-height: calc(var(--index) * 14); /* Можете подобрать высоту */
     overflow-y: auto;
     overflow-x: hidden;
-    padding-right: 5px; /* небольшой отступ для скроллбара */
+    padding-right: calc(var(--index) *.5); /* небольшой отступ для скроллбара */
 }
 
 .transaction-item {
@@ -875,6 +862,16 @@ body{
     padding: calc(var(--index) * 0.33);
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: calc(var(--index) * 0.27);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all ease .3s;
+    cursor: pointer;
+}
+
+.transaction-item:hover {
+    transform: translateY(calc(var(--index) * -0.07));
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background: linear-gradient(135deg, #fff5f5, #ffe5e5);
+    border-color: #FF5858;
 }
 
 .transaction-icon {
@@ -888,9 +885,9 @@ body{
 
 .transaction-icon.emoji-bg {
     position: relative;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
+    width: calc(var(--index) * 1.5);
+    height: calc(var(--index) * 1.5);
+    border-radius: calc(var(--index)*.4);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -903,14 +900,13 @@ body{
     inset: 0;
     background: linear-gradient(135deg, rgba(255, 100, 100, 0.6), rgba(255, 200, 150, 0.4));
     backdrop-filter: blur(8px);
-    border-radius: 12px;
+    border-radius: calc(var(--index)*.4);
     z-index: 0;
 }
 
 .transaction-icon .emoji {
     position: relative;
-    z-index: 1;
-    font-size: 20px;
+    font-size: calc(var(--index)* .8);
 }
 
 
@@ -1057,11 +1053,11 @@ body{
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: calc(var(--index) * 0.53);
     padding: calc(var(--index) * 0.53);
-    margin-top: calc(var(--index) * 0.53);
-    max-height: calc(var(--index) * 10); /* Можете подобрать высоту */
+    margin-top: 0;
+    max-height: calc(var(--index) * 10); 
     overflow-y: auto;
     overflow-x: hidden;
-    padding-right: 5px; /* небольшой отступ для скроллбара */
+    padding-right: 5px; 
     max-width: calc(var(--index) * 18);
 }
 
@@ -1080,6 +1076,13 @@ body{
     padding: calc(var(--index) * 0.4);
     margin-bottom: calc(var(--index) * 0.33);
     border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: all .3s ease;
+}
+
+.goal-item:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background: linear-gradient(135deg, #fff5f5, #ffe5e5);
+    border-color: #FF5858;
 }
 
 .goal-header {
@@ -1093,6 +1096,7 @@ body{
     font-weight: 500;
     font-size: calc(var(--index) * 0.5);
     flex: 1;
+    text-transform: capitalize;
 }
 
 .goal-percentage {
@@ -1125,7 +1129,7 @@ body{
     margin-top: calc(var(--index) * 0.53);
     display: flex;
     flex-direction: column;
-    height: calc(var(--index) * 10);
+    height: calc(var(--index) * 7.5);
 }
 
 .goals-header {
@@ -1235,14 +1239,7 @@ body{
     flex-shrink: 0;
 }
 
-/* Исправлены цвета транзакций */
-.transaction-amount.negative {
-    color: #FF5858; /* Более консистентный цвет */
-}
 
-.transaction-amount.positive {
-    color: #4CAF50;
-}
 
 
 .second-wrapper {
@@ -1392,7 +1389,7 @@ body{
     background: linear-gradient(135deg, #ffffff, #f8f9fa);
     margin-top: calc(var(--index) * 0.33);
     border-radius: calc(var(--index) * 0.4);
-    width: calc(var(--index) * 11.33);
+    width: calc(var(--index) * 10.25);
     height: calc(var(--index) * 2);
     border: 1px solid rgba(0, 0, 0, 0.1);
     cursor: pointer;
@@ -1732,4 +1729,3 @@ body{
 #clearSelectedData:hover {
     background: #e03e3e;
 }
-
